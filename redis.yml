@@ -46,7 +46,7 @@
       - name: Redis | copy config files
         copy:
           src: "{{ item }}.conf"
-          dest: "{{ redis_confdir}/{{ item }}.conf"
+          dest: "{{ redis_confdir}}/{{ item }}.conf"
           mode: 0644
         with_items: "{{ redis_services }}"
 
