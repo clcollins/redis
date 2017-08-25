@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+
+trap sigint INT
+trap sigterm TERM
+trap sigkill KILL
+
+sigint () {
+  
+  /usr/bin/redis-shutdown redis-sentinel
+
+}
+
+sigterm () {
+  
+  /usr/bin/redis-shutdown redis-sentinel
+
+}
+
+sigkill () {
+
+  exit
+
+}
+
+mk_logs () {
+  local logdir="/var/log/redis"
+  local logfile="sentinel.log"
+
+  if [[ ! -d $logdir ]]
+  then
+    mkdir $logdir
+  fi
+
+  if [[ ! -f $logfile ]]
+  then
+    touch ${logdir}/${logfile}
+  fi
+
+  chown -R redis $logdir
+}
+
+
+main () {
+
+  mk_logs
+
+  /usr/bin/redis-sentinel /etc/redis-sentinel.conf --daemonize no
+
+}
+
+main "$@"
+

@@ -1,0 +1,7 @@
+---
+  pkgs_osspec:
+    - redis-server
+    - redis-sentinel
+    - runit
+
+  redis_confdir: /etc/redis

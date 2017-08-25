@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -e
+
+trap sigint INT
+trap sigterm TERM
+trap sigkill KILL
+
+sigint () {
+  
+  /usr/bin/redis-shutdown
+
+}
+
+sigterm () {
+  
+  /usr/bin/redis-shutdown
+
+}
+
+sigkill () {
+
+  exit
+
+}
+
+mk_logs () {
+  local logdir="/var/log/redis"
+  local logfile="redis.log"
+
+  if [[ ! -d $logdir ]]
+  then
+    mkdir $logdir
+  fi
+
+  if [[ ! -f $logfile ]]
+  then
+    touch ${logdir}/${logfile}
+  fi
+
+  chown -R redis $logdir
+}
+
+main () {
+  local redisdir="/var/lib/redis"
+
+  mk_logs
+
+  chown -R redis $redisdir
+
+  /usr/bin/redis-server /etc/redis.conf --daemonize no
+
+}
+
+main "$@"
+
