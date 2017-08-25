@@ -2,5 +2,15 @@ version: '2'
 services:
   centos:
     build:
+      dockerfile: Dockerfile-centos
       context: .
-    ports: 127.0.0.1:6379:6379
+    image: redis:centos
+    ports:
+      - 127.0.0.1:6379:6379
+  ubuntu:
+    build:
+      dockerfile: Dockerfile-ubuntu
+      context: .
+    image: redis:ubuntu
+    ports:
+      - 127.0.0.1:6379:6379
